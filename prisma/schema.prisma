@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model auditLog {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  action    String
+  timestamp DateTime @default(now())
+  details   Json
+}
+
+model order {
+  id             Int           @id @default(autoincrement())
+  userId         String
+  time           DateTime
+  side           STYPE
+  orderType      OTYPE
+  price          Decimal
+  quantity       Decimal
+  status         STATUS        @default(PENDING)
+  filledAmount   Decimal       @default(0)
+  filledQuantity Decimal       @default(0)
+  symbol         String
+  transaction    transaction[]
+
+  @@index([symbol])
+  @@index([userId])
+}
+
+model positions {
+  id       Int     @id @default(autoincrement())
+  userId   String
+  side     STYPE
+  price    Decimal
+  quantity Decimal
+  avgPrice Decimal
+  symbol   String
+}
+
+model transaction {
+  id          Int      @id @default(autoincrement())
+  userId      String   @default("null")
+  time        DateTime
+  side        STYPE
+  price       Decimal
+  quantity    Decimal
+  totalAmount Decimal
+  orderId     Int
+  symbol      String
+  order       order    @relation(fields: [orderId], references: [id])
+
+  @@index([symbol])
+}
+
+model wallet {
+  id       Int     @id @default(autoincrement())
+  userId   String  @unique
+  balance  Decimal
+  reserved Decimal @default(0.0)
+
+  @@index([userId])
+}
+
+enum OTYPE {
+  MARKET
+  LIMIT
+}
+
+enum STATUS {
+  PENDING
+  PARTIALLY_FILLED
+  COMPLETED
+  CANCELED
+}
+
+enum STYPE {
+  BUY
+  SELL
+}
