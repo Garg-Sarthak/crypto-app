@@ -57,7 +57,7 @@ export default function OrderPlace(props : orderPlaceProps) {
                 </div>
             </div>
             <div>
-                <Input className={`${type === "MARKET"? "cursor-not-allowed" : ""}`} disabled={type === "MARKET"} type="number" min={minPrice} max={maxPrice} step={0.1} placeholder="Enter Price" onChange={(e) => {setPrice(parseFloat(e.target.value) || 0); console.log(price)}}>
+                <Input className={`${type === "MARKET"? "cursor-not-allowed" : ""}`} disabled={type === "MARKET"} type="number" min={minPrice} max={maxPrice} step={0.1} placeholder="Enter Price" onChange={(e) => {setPrice(parseFloat(e.target.value) || 0);}}>
                 </Input>
             </div>
             <div className="grid grid-cols-3 mt-6">
@@ -66,7 +66,7 @@ export default function OrderPlace(props : orderPlaceProps) {
                 </div>
             </div>
             <div>
-                <Input type="number" min={0.001} max={maxQuantity} placeholder="Enter Quantity" onChange={(e) => {setQuantity(parseFloat(e.target.value) || 0) ; console.log(quantity);} }>
+                <Input type="number" min={0.001} max={maxQuantity} placeholder="Enter Quantity" onChange={(e) => {setQuantity(parseFloat(e.target.value) || 0) ;} }>
                 </Input>
             </div>
             <div className="grid grid-cols-3">
@@ -117,10 +117,10 @@ async function makeDbCall(userId:string,userPrice : number, userQuantity : numbe
         symbol : symbol.toUpperCase().slice(0,3)
         
     })
+    window.alert("Order Placed Successfully")
     if (res.data.status == "success"){
-        window.alert("Order Placed Successfully")
+        console.log(res);
     }
-    console.log(res);
 
 
 

@@ -12,17 +12,17 @@ export default function Header() {
             Trade
           </Button>
         </Link>
-        <Link href="/about" className="hover:text-gray-300">
+        <Link href="/tradePage" className="hover:text-gray-300">
         <Button>
             Transactions
           </Button>
         </Link>
-        <Link href="/services" className="hover:text-gray-300">
+        <Link href="/tradePage" className="hover:text-gray-300">
         <Button>
             Orders
           </Button>
         </Link>
-        <Link href="/contact" className="hover:text-gray-300">
+        <Link href="/tradePage" className="hover:text-gray-300">
         <Button>
             Wallet
           </Button>
