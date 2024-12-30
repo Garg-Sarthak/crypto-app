@@ -1,5 +1,5 @@
 "use client"
-import OrderBook, { OrderBook2 } from "@/components/orderBook";
+import { OrderBook2 } from "@/components/orderBook";
 import OrderPlace from "@/components/orderPlace";
 import TradingView from "@/components/tradingView";
 import { useEffect, useState } from "react";
