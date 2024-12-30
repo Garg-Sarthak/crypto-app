@@ -118,7 +118,7 @@ async function makeDbCall(userId:string,userPrice : number, userQuantity : numbe
         
     })
     window.alert("Order Placed Successfully")
-    if (res.data.status == "success"){
+    if (res.data.status === "success"){
         console.log(res);
     }
 
