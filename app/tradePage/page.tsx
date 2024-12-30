@@ -39,7 +39,6 @@ export default function TradePage() {
                     <option value="BTC">BTC/USDT</option>
                     <option value="ETH">ETH/USDT</option>
                     <option value="SOL">SOL/USDT</option>
-                    <option value="DOGE">DOGE/USDT</option>
                 </select>
             <div className="grid grid-cols-12 text-white ml-10">
               <div className="col-span-6 m-3 min-h-[640px] max-h-[640px]"><TradingView symbol={symbol.toLowerCase() + "usdt"} /></div>

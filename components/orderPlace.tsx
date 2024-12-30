@@ -1,9 +1,9 @@
-import { useMemo, useState } from "react";
+import {useMemo, useState } from "react";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import { Input } from "./ui/input";
 import axios from "axios"
-import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton, useSession } from "@clerk/nextjs";
 
 
 interface orderPlaceProps {
@@ -12,6 +12,13 @@ interface orderPlaceProps {
 }
 
 export default function OrderPlace(props : orderPlaceProps) {
+    const session = useSession();
+    const userId = useMemo(() => {
+        if (session.isLoaded && session.isSignedIn) {
+            return session.session.user.id
+        }
+        return "loggedOutUser"
+    },[props.symbolPrice])
     const minPrice = useMemo(() => {
         return props.symbolPrice * 0.95
     },[props.symbolPrice])
@@ -59,13 +66,13 @@ export default function OrderPlace(props : orderPlaceProps) {
                 </div>
             </div>
             <div>
-                <Input type="number" min={0.001} max={maxQuantity} placeholder="Enter Price" onChange={(e) => {setQuantity(parseFloat(e.target.value) || 0) ; console.log(quantity)}}>
+                <Input type="number" min={0.001} max={maxQuantity} placeholder="Enter Quantity" onChange={(e) => {setQuantity(parseFloat(e.target.value) || 0) ; console.log(quantity);} }>
                 </Input>
             </div>
             <div className="grid grid-cols-3">
                 <div className="items-center mt-16">
                     <SignedIn>
-                        <Button onClick={() => makeDbCall(price,quantity,maxPrice,minPrice,maxQuantity,type,side)} className={`${side === "BUY"? "bg-green-300 hover:bg-green-300" : "bg-red-300 hover:bg-red-300"} py-10 text-md text-black`}>
+                        <Button onClick={() => makeDbCall(userId,price,quantity,maxPrice,minPrice,maxQuantity,type,side,props.symbol,props.symbolPrice)} className={`${side === "BUY"? "bg-green-300 hover:bg-green-300" : "bg-red-300 hover:bg-red-300"} py-10 text-md text-black`}>
                             Place {`${side}`} Order for {((type === "MARKET"? currPrice : price)*quantity).toFixed(3) } USD
                         </Button>
                     </SignedIn>
@@ -82,36 +89,39 @@ export default function OrderPlace(props : orderPlaceProps) {
     )
 }
 
-async function makeDbCall(userPrice : number, userQuantity : number, maxPrice : number, minPrice : number, maxQuantity : number,type : string, side : string) {
-    
-    // if (type == "LIMIT" ){if (userPrice > maxPrice){
-    //     window.alert("Price must be within 5% of Last Traded Price (LTP)")
-    //     return 
-    // }else if (userPrice < minPrice){
-    //     window.alert("Price must be within 5% of Last Traded Price (LTP)")
-    //     return 
-    // }}
+async function makeDbCall(userId:string,userPrice : number, userQuantity : number, maxPrice : number, minPrice : number, maxQuantity : number,type : string, side : string,symbol:string,symbolPrice : number) {
+    console.log("made calls")
+    if (type == "LIMIT" ){if (userPrice > maxPrice){
+        window.alert("Price must be within 5% of Last Traded Price (LTP)")
+        return 
+    }else if (userPrice < minPrice){
+        window.alert("Price must be within 5% of Last Traded Price (LTP)")
+        return 
+    }}
 
-    // if (userQuantity > maxQuantity){
-    //     window.alert("Order Value can't exceed 10,000,000 USD")
-    //     return 
-    // }else if (userQuantity * userPrice < 1){
-    //     window.alert("Order Value can't be less than 1 USD")
-    //     return 
-    // }
+    if (userQuantity > maxQuantity){
+        window.alert("Order Value can't exceed 10,000,000 USD")
+        return 
+    }else if (type == "LIMIT" && userQuantity * userPrice < 1){
+        window.alert("Order Value can't be less than 1 USD")
+        return 
+    }
     
-    const res = await axios.post("/api/user",{
-        price : userPrice,
+    
+    const res = await axios.post("/api/order",{
+        userId,
+        side,
+        orderType : type,
+        price : side == "LIMIT"?userPrice:symbolPrice,
         quantity : userQuantity,
-        maxPrice : maxPrice,
-        minPrice : minPrice,
-        maxQuantity : maxQuantity,
-        type : type,
-        side : side
+        symbol : symbol.toUpperCase().slice(0,3)
+        
     })
+    if (res.data.status == "success"){
+        window.alert("Order Placed Successfully")
+    }
     console.log(res);
 
 
 
 }
-
