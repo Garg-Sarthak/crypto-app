@@ -3,7 +3,7 @@ import { OrderBook2 } from "@/components/orderBook";
 import OrderPlace from "@/components/orderPlace";
 import TradingView from "@/components/tradingView";
 import { useEffect, useState } from "react";
-
+//a
 export default function TradePage() {
     const [symbol, setSymbol] = useState("BTC");
     const [price, setPrice] = useState(0); // here 
