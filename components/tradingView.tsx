@@ -1,7 +1,11 @@
 "use client"
 import React, { useEffect, useRef, memo } from "react";
 
-const TradingViewWidget: React.FC = () => {
+interface TradingViewWidgetProps {
+  symbol: string;
+}
+
+const TradingViewWidget: React.FC<TradingViewWidgetProps> = (props) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -14,8 +18,8 @@ const TradingViewWidget: React.FC = () => {
     script.innerHTML = `
       {
         "autosize": true,
-        "symbol": "NASDAQ:AAPL",
-        "interval": "D",
+        "symbol": "${props.symbol}",
+        "interval": "H",
         "timezone": "Etc/UTC",
         "theme": "dark",
         "style": "1",
@@ -31,7 +35,7 @@ const TradingViewWidget: React.FC = () => {
         containerRef.current.innerHTML = "";
       }
     };
-  }, []);
+  }, [props.symbol]);
 
   return (
     <div

@@ -5,14 +5,18 @@ import { useEffect, useState } from 'react'
 // Define a type for the order tuple
 type OrderTuple = [number, number]
 
+
+interface Order {
+  symbol : String
+}
 interface OrderBookProps {
   bids: OrderTuple[]
   asks: OrderTuple[]
   currentPrice: number
 }
 
-export default function OrderBook(props : any) {
-  const symbol = props.symbol
+export default function OrderBook(props : Order) {
+  const { symbol } = props
   const [price, setPrice] = useState(0);
   const [asks, setAsks] = useState([]);
   const [bids, setBids] = useState([]);
@@ -70,3 +74,13 @@ function BookMaker({ bids, asks, currentPrice }: OrderBookProps) {
   )
 }
 
+export function OrderBook2(props : OrderBookProps) {
+
+  const { asks, bids, currentPrice: price } = props
+
+  return (
+    <div>
+      <BookMaker currentPrice={price} bids={bids} asks={asks} />
+    </div>
+  )
+}
