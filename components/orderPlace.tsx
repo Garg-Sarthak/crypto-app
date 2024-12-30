@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import { Input } from "./ui/input";
 import axios from "axios"
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 
 
 interface orderPlaceProps {
@@ -63,9 +64,17 @@ export default function OrderPlace(props : orderPlaceProps) {
             </div>
             <div className="grid grid-cols-3">
                 <div className="items-center mt-16">
-                    <Button onClick={() => makeDbCall(price,quantity,maxPrice,minPrice,maxQuantity,type,side)} className={`${side === "BUY"? "bg-green-300 hover:bg-green-300" : "bg-red-300 hover:bg-red-300"} py-10 text-md text-black`}>
-                        Place {`${side}`} Order for {((type === "MARKET"? currPrice : price)*quantity).toFixed(3) } USD
-                    </Button>
+                    <SignedIn>
+                        <Button onClick={() => makeDbCall(price,quantity,maxPrice,minPrice,maxQuantity,type,side)} className={`${side === "BUY"? "bg-green-300 hover:bg-green-300" : "bg-red-300 hover:bg-red-300"} py-10 text-md text-black`}>
+                            Place {`${side}`} Order for {((type === "MARKET"? currPrice : price)*quantity).toFixed(3) } USD
+                        </Button>
+                    </SignedIn>
+                    <SignedOut>
+                        <Button onClick = {() => {window.alert("You must be logged in to place an order")}} className={`${side === "BUY"? "bg-green-300 hover:bg-green-300" : "bg-red-300 hover:bg-red-300"} mb-10 py-10 text-md text-black`}>
+                            Place {`${side}`} Order for {((type === "MARKET"? currPrice : price)*quantity).toFixed(3) } USD
+                        </Button>
+                        <SignInButton><Button className="text-black bg-yellow-500">Log In to Place Order</Button></SignInButton>
+                    </SignedOut>
                 </div>
 
             </div>
