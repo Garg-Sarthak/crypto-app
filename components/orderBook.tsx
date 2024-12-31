@@ -50,7 +50,7 @@ function BookMaker({ bids, asks, currentPrice }: OrderBookProps) {
       <div className="space-y-1">
         {asks.map(([price, quantity]) => (
           <div key={price} className="grid grid-cols-2 gap-4 text-sm">
-            <div className="text-red-500">{price}</div>
+            <div className="text-red-500">{price || "waiting for data ..."}</div>
             <div className="text-right">{quantity}</div>
           </div>
         ))}
@@ -58,14 +58,14 @@ function BookMaker({ bids, asks, currentPrice }: OrderBookProps) {
 
       {/* Current Price */}
       <div className="my-4 text-center border-y border-gray-700 py-2">
-        <span className="text-xl">{currentPrice} USD</span>
+        <span className="text-xl">{currentPrice || "waiting for data ..."} USD</span>
       </div>
 
       {/* Bids (Buy) Orders */}
       <div className="space-y-1">
         {bids.map(([price, quantity]) => (
           <div key={price} className="grid grid-cols-2 gap-4 text-sm">
-            <div className="text-green-500">{price}</div>
+            <div className="text-green-500">{price || "waiting for data ..."}</div>
             <div className="text-right">{quantity}</div>
           </div>
         ))}

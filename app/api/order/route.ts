@@ -23,7 +23,8 @@ export async function POST(req : NextRequest){
         try{
             const redisClient = createClient({url : process.env.REDIS_URL as string});
             await redisClient.connect();
-            console.log("connected to redis");
+            if (!redisClient.isOpen) console.log("not connected to redis");
+            else console.log("connected to redis");
             const rediSymbol = order.symbol.toLowerCase()+"usdt";
             const side = order.side.toLowerCase();
             const price = Number(order.price);
@@ -35,7 +36,8 @@ export async function POST(req : NextRequest){
             redisClient.quit().then(() => console.log("disconnected from redis"))
         }catch(e){
             return NextResponse.json({
-                error : e
+                error : e,
+                "order" : order
             })
         }
         return NextResponse.json({

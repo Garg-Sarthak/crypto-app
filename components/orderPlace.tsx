@@ -1,3 +1,4 @@
+"use strict"
 import {useMemo, useState } from "react";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
@@ -117,6 +118,7 @@ async function makeDbCall(userId:string,userPrice : number, userQuantity : numbe
         symbol : symbol.toUpperCase().slice(0,3)
         
     })
+    console.log(res);
     window.alert("Order Placed Successfully")
     if (res.data.status === "success"){
         console.log(res);
