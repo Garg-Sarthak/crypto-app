@@ -3,6 +3,29 @@ import client from "@/db"
 import { createClient } from 'redis';
 
 
+export async function GET(req : NextRequest){
+    const userId = req.headers.get("User");
+    if (userId){
+        try
+        {const orders = await client.order.findMany({
+            where : {
+                userId
+            }, orderBy : {
+                time : "desc"
+            }
+        })
+        return NextResponse.json({
+            orders
+        })
+        }catch(e){
+            return NextResponse.json({
+                error : e
+            })
+        }
+    }
+
+}
+
 export async function POST(req : NextRequest){
 
     const body = await req.json();

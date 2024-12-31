@@ -108,7 +108,7 @@ async function makeDbCall(userId:string,userPrice : number, userQuantity : numbe
         return 
     }
     
-    
+    window.alert("order placed, wait few second for execution")
     const res = await axios.post("/api/order",{
         userId,
         side,
@@ -119,10 +119,14 @@ async function makeDbCall(userId:string,userPrice : number, userQuantity : numbe
         
     })
     console.log(res);
-    window.alert("Order Placed Successfully")
     if (res.data.status === "success"){
+        window.alert("Order Executed Successfully")
         console.log(res);
     }
+    const trs = await axios.post("/api/transactions",{
+        userId : userId
+    })
+    console.log(trs);
 
 
 
