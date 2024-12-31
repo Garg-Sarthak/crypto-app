@@ -26,7 +26,13 @@ function TransactionRow({ transaction, index }: TransactionRowProps) {
 export default function Transactions() {
     const [trsns, setTrsns] = useState([]);
     const [user, setUser] = useState("");
-
+    
+    const session = useSession();
+    useEffect(() => {
+        if (session.isLoaded && session.isSignedIn) {
+            setUser(session.session.user.id);
+        }
+    }, [session]);
     useEffect(() => {
         const fetchTrans = async () => {
             try {
@@ -43,12 +49,6 @@ export default function Transactions() {
         fetchTrans();
     }, [user]);
 
-    const session = useSession();
-    useEffect(() => {
-        if (session.isLoaded && session.isSignedIn) {
-            setUser(session.session.user.id);
-        }
-    }, [session]);
 
     return (
         <div className="min-h-screen bg-gray-900 text-white p-4">
