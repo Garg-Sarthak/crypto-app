@@ -89,7 +89,7 @@ export default function Order() {
     return (
         <div className="min-h-screen bg-gray-900 text-white p-4">
             <h1 className="text-3xl font-bold mb-6">Orders</h1>
-            {orders.length === 0 && <p>No orders found yet.</p>}
+            {orders.length === 0 && <p>No orders found yet. (Try Reloading the page)</p>}
             {orders.length > 0 ? (
                 <div className="overflow-x-auto">
                     <table className="w-full border-collapse border border-gray-700">
