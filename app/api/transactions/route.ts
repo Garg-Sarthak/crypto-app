@@ -6,24 +6,36 @@ export async function GET(req : NextRequest){
     const userId = req.headers.get("User");
     if (userId){
     try{
-        const orders = await client.order.findMany({
+        // const orders = await client.order.findMany({
+        //     select : {
+        //         id : true
+        //     },
+        //     where : {
+        //         userId : userId
+        //     }
+        // })
+        // if (orders){
+        //     for (const order of orders){
+        //         await client.transaction.updateMany({
+        //             where : {
+        //                 orderId : order.id
+        //             },
+        //             data : {
+        //                 userId : userId
+        //             }
+        //         })
+        //     }
+        // }
+        await client.transaction.updateMany({
             where : {
-                userId : userId
+                order : {
+                    userId : userId
+                }
+            },
+            data : {
+                userId
             }
         })
-        if (orders){
-            for (const order of orders){
-                await client.transaction.updateMany({
-                    where : {
-                        userId : "null",
-                        orderId : order.id
-                    },
-                    data : {
-                        userId : userId
-                    }
-                })
-            }
-        }
         const transactions = await client.transaction.findMany({
             where : {
                 userId : userId
