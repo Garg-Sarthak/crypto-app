@@ -100,7 +100,7 @@ export default function Order() {
                                 <th className="p-2 border border-gray-700">Symbol</th>
                                 <th className="p-2 border border-gray-700">Side</th>
                                 <th className="p-2 border border-gray-700">Type</th>
-                                <th className="p-2 border border-gray-700">Price</th>
+                                <th className="p-2 border border-gray-700">Price (Limit)</th>
                                 <th className="p-2 border border-gray-700">Quantity</th>
                                 <th className="p-2 border border-gray-700">Status</th>
                                 <th className="p-2 border border-gray-700">Time</th>

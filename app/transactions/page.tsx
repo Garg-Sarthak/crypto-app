@@ -1,6 +1,7 @@
 "use client";
 import { useSession } from "@clerk/nextjs";
 import axios from "axios";
+import { headers } from "next/headers";
 import { useEffect, useState } from "react";
 
 // A functional component to display each transaction row
@@ -36,9 +37,9 @@ export default function Transactions() {
     useEffect(() => {
         const fetchTrans = async () => {
             try {
-                const response = await axios.post("/api/transactions", {
-                    userId: user,
-                });
+                const response = await axios.get("/api/transactions", {headers : {
+                    "User" : user
+                }});
                 if (response) {
                     setTrsns(response.data.transactions);
                 }

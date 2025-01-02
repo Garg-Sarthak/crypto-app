@@ -42,8 +42,8 @@ export default function OrderPlace(props : orderPlaceProps) {
     return (
         <div >
             <div className="grid grid-cols-2">
-                <Button className={`text-green-500 rounded-xl mx-1 ${side==="BUY"?"bg-green-50" : ""} hover:bg-white`} onClick={() => setSide("BUY")}>BUY</Button>
-                <Button className={`text-red-500 rounded-xl mx-1 ${side==="SELL"?"bg-red-100" : ""} hover:bg-white`} onClick={() => setSide("SELL")}>SELL</Button>
+                <Button className={`text-black rounded-xl mx-1 ${side==="BUY"?"bg-green-400" : "bg-white"} hover:bg-green-100`} onClick={() => setSide("BUY")}>BUY</Button>
+                <Button className={`text-black rounded-xl mx-1 ${side==="SELL"?"bg-red-400" : "bg-white"} hover:bg-red-100`} onClick={() => setSide("SELL")}>SELL</Button>
             </div>
             <Separator className=" my-2 bg-gray-600"/>
             <div className="grid grid-cols-2 mt-5 text-lg">
@@ -103,28 +103,28 @@ async function makeDbCall(userId:string,userPrice : number, userQuantity : numbe
     if (userQuantity > maxQuantity){
         window.alert("Order Value can't exceed 10,000,000 USD")
         return 
-    }else if (type == "LIMIT" && userQuantity * userPrice < 1){
+    }else if (userQuantity <= 0.00000001 || (type == "LIMIT" && userQuantity * userPrice < 1)){
         window.alert("Order Value can't be less than 1 USD")
         return 
     }
     
-    window.alert("order placed, wait few second for execution")
+    window.alert("order registered, wait few second for registration")
     const res = await axios.post("/api/order",{
         userId,
         side,
         orderType : type,
-        price : side == "LIMIT"?userPrice:symbolPrice,
+        price : type == "LIMIT"?userPrice:side=="BUY"?symbolPrice*1.05:symbolPrice*0.95,
         quantity : userQuantity,
         symbol : symbol.toUpperCase().slice(0,3)
         
     })
     console.log(res);
     if (res.data.status === "success"){
-        window.alert("Order Executed Successfully")
+        window.alert("Order Placed Successfully, check orders page for details")
         console.log(res);
     }
-    const trs = await axios.post("/api/transactions",{
-        userId : userId
+    const trs = await axios.get("/api/transactions",{
+        headers : {"user" : userId}
     })
     console.log(trs);
 
