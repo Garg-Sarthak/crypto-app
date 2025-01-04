@@ -54,7 +54,7 @@ export default function Transactions() {
     return (
         <div className="min-h-screen bg-gray-900 text-white p-4">
             <h1 className="text-3xl font-bold mb-6">Transactions</h1>
-            {(trsns.length == 0) && <h1 className="text-3xl font-bold mb-6">No transactions found yet. (Try relaoding the page)</h1>}
+            {(trsns.length == 0) && <h1 className="text-3xl font-bold mb-6">No transactions found yet. (Try reloading the page)</h1>}
             {trsns.length > 0 ? (
                 <div className="overflow-x-auto">
                     <table className="w-full border-collapse border border-gray-700">

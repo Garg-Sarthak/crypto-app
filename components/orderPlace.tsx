@@ -99,6 +99,9 @@ async function makeDbCall(userId:string,userPrice : number, userQuantity : numbe
         window.alert("Price must be within 5% of Last Traded Price (LTP)")
         return 
     }}
+    else if (userPrice == 0 || symbolPrice == 0){
+        window.alert("Invalid Price Entered, or wait for data to load")
+    }
 
     if (userQuantity > maxQuantity){
         window.alert("Order Value can't exceed 10,000,000 USD")
