@@ -27,7 +27,7 @@ export default function OrderPlace(props : orderPlaceProps) {
         return props.symbolPrice * 1.05
     },[props.symbolPrice])
     const maxQuantity = useMemo(() => {
-        return 100000000/props.symbolPrice
+        return 1000000/props.symbolPrice
     },[props.symbolPrice])
     const currPrice = useMemo(() => {
         return props.symbolPrice
@@ -104,7 +104,7 @@ async function makeDbCall(userId:string,userPrice : number, userQuantity : numbe
     }
 
     if (userQuantity > maxQuantity){
-        window.alert("Order Value can't exceed 10,000,000 USD")
+        window.alert("Order Value can't exceed 1,000,000 USD")
         return 
     }else if (userQuantity <= 0.00000001 || (type == "LIMIT" && userQuantity * userPrice < 1)){
         window.alert("Order Value can't be less than 1 USD")
